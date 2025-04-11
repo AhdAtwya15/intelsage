@@ -17,10 +17,10 @@ function App() {
   }, [theme]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ColorModeContext value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="flex h-screen bg-white dark:bg-darkBg transition-colors ">
+        <CssBaseline  />
+        <div className="flex h-screen ">
           <Sidebar />
 
           <div className="flex-grow">
@@ -28,7 +28,7 @@ function App() {
           </div>
         </div>
       </ThemeProvider>
-    </ColorModeContext.Provider>
+    </ColorModeContext>
   );
 }
 
