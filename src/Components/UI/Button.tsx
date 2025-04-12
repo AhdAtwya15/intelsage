@@ -7,13 +7,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-black border-[2px]  hover:opacity-80", 
+        default: "bg-black dark:bg-[#FFFFFF] hover:opacity-80 dark:text-black", 
         danger: "bg-red-900 dark:bg-[#c2344d] dark:text-white dark:hover:bg-red-700",
         outline: "border border-indigo-400 hover:text-white bg-transparent text-black hover:border-transparent hover:bg-indigo-600 dark:text-gray-700 dark:hover:text-white",
       },
       size: {
         default: "p-5 rounded-xl w-full",
-        sm: "text-sm px-3 py-1 rounded-md",
+        sm: "text-xs px-9 py-2 rounded-lg",
       },
       fullWidth: {
         true: "w-full",

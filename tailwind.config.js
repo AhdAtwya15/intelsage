@@ -1,14 +1,75 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class", 
   content: [
+    "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        'roobert': ['Roobert PRO', 'sans-serif'], 
+        roobert: ["Roobert PRO", "sans-serif"],
       },
+      colors: {
+        primary: {
+          100: 'var(--color-primary-100)',
+          200: 'var(--color-primary-200)',
+          300: 'var(--color-primary-300)',
+          400: 'var(--color-primary-400)',
+          500: 'var(--color-primary-500)',
+          600: 'var(--color-primary-600)',
+          700: 'var(--color-primary-700)',
+          800: 'var(--color-primary-800)',
+          900: 'var(--color-primary-900)',
+        },
+        redAccent: {
+          100: 'var(--color-redAccent-100)',
+          200: 'var(--color-redAccent-200)',
+          300: 'var(--color-redAccent-300)',
+          400: 'var(--color-redAccent-400)',
+          500: 'var(--color-redAccent-500)',
+          600: 'var(--color-redAccent-600)',
+          700: 'var(--color-redAccent-700)',
+          800: 'var(--color-redAccent-800)',
+          900: 'var(--color-redAccent-900)',
+        },
+        greenAccent: {
+          100: 'var(--color-greenAccent-100)',
+          200: 'var(--color-greenAccent-200)',
+          300: 'var(--color-greenAccent-300)',
+          400: 'var(--color-greenAccent-400)',
+          500: 'var(--color-greenAccent-500)',
+          600: 'var(--color-greenAccent-600)',
+          700: 'var(--color-greenAccent-700)',
+          800: 'var(--color-greenAccent-800)',
+          900: 'var(--color-greenAccent-900)',
+        },
+        blueAccent: {
+          100: 'var(--color-blueAccent-100)',
+          200: 'var(--color-blueAccent-200)',
+          300: 'var(--color-blueAccent-300)',
+          400: 'var(--color-blueAccent-400)',
+          500: 'var(--color-blueAccent-500)',
+          600: 'var(--color-blueAccent-600)',
+          700: 'var(--color-blueAccent-700)',
+          800: 'var(--color-blueAccent-800)',
+          900: 'var(--color-blueAccent-900)',
+        },
+        grey: {
+          100: 'var(--color-grey-100)',
+          200: 'var(--color-grey-200)',
+          300: 'var(--color-grey-300)',
+          400: 'var(--color-grey-400)',
+          500: 'var(--color-grey-500)',
+          600: 'var(--color-grey-600)',
+          700: 'var(--color-grey-700)',
+          800: 'var(--color-grey-800)',
+          900: 'var(--color-grey-900)',
+        },
+      },  
     },
   },
-  plugins: [],
-}
+  plugins: [require("flowbite/plugin")],
+};
+
