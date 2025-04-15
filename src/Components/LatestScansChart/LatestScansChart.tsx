@@ -25,10 +25,10 @@ const data = [
 
 const LatestScansChart = () => {
   return (
-    <div className="rounded-lg shadow-md bg-white dark:bg-darkBg p-4">
+    <div className="rounded-lg border-[1px] border-[#ececece1] dark:border-none  bg-primary-400 p-4">
       <div className="flex items-center gap-2 mb-4">
-        <AiOutlineLogin className="text-gray-600 dark:text-gray-300 text-lg" />
-        <h2 className="text-lg  font-roobert text-gray-800 dark:text-gray-200">
+        <AiOutlineLogin className=" text-grey-100 text-lg" />
+        <h2 className="text-lg  font-roobert  text-grey-100">
           Latest Scans
         </h2>
       </div>
@@ -47,20 +47,19 @@ const LatestScansChart = () => {
             className="dark:stroke-gray-700"
           />
           <XAxis
-            dataKey="year"
-            tick={{
-              fill: "rgb(75 85 99)",
-              fontSize: 14,
-              fontWeight: 500,
-            }}
-            className="dark:fill-gray-400"
-            tickLine={false}
-          />
+  dataKey="year"
+  tick={{
+    fill: "var(--color-grey-100)",
+    fontSize: 14,
+    fontWeight: 500,
+  }}
+  tickLine={false}
+/>
           <YAxis
             tick={{
-              fill: "rgb(75 85 99)",
-              fontSize: 14,
-              fontWeight: 500,
+              fill: "var(--color-grey-100)",
+    fontSize: 14,
+    fontWeight: 500,
             }}
             className="dark:fill-gray-400"
             tickFormatter={(value) => (value === 0 ? "0" : `${value / 1000}k`)}
@@ -78,7 +77,7 @@ const LatestScansChart = () => {
               borderRadius: "8px",
               border: "1px solid rgb(229 231 235)",
             }}
-            className="dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
+          
           />
           <Area
             type="monotone"
