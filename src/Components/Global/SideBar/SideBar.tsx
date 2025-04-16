@@ -9,6 +9,10 @@ import { LuSunDim } from "react-icons/lu";
 import { useTheme } from "@mui/material/styles";
 import { IoClose, IoMenu } from "react-icons/io5";
 
+interface SidebarIconProps {
+  icon: React.ReactNode;
+}
+
 const Sidebar = () => {
   const theme = useTheme();
   const { toggleColorMode } = useContext(ColorModeContext);
@@ -30,8 +34,8 @@ const Sidebar = () => {
       </button>
 
       <div
-        className={`fixed top-0 left-0 h-full w-20 md:w-20 flex flex-col items-center py-4 shadow-lg transition-transform transform
-         bg-gray-50 dark:bg-cardDark z-50 ${
+        className={`fixed top-0 left-0 h-full w-20 md:w-20 flex flex-col items-center py-4  transition-transform transform
+         bg-primary-400 z-50 ${
            isOpen ? "translate-x-0" : "-translate-x-full"
          } md:translate-x-0`}
       >
@@ -91,7 +95,7 @@ const Sidebar = () => {
   );
 };
 
-const SidebarIcon = ({ icon }: { icon: JSX.Element }) => (
+const SidebarIcon = ({ icon }:  SidebarIconProps) => (
   <div className="group relative flex items-center justify-center w-full cursor-pointer text-black dark:text-white">
     {icon}
   </div>

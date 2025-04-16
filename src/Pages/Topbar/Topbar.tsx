@@ -13,10 +13,10 @@ export default function Topbar({pageTitle}:IProps) {
         </span>
       </div>
       <div className="flex justify-between">
-        <div className="relative w-[360px]">
+        <div className="relative w-[360px] ">
           <input
             type="search"
-            className="block  w-full p-2 shadow-md text-sm text-grey-600 dark:text-grey-100 font-medium border-slate-200 bg-primary-400 dark:border-none rounded-lg  focus:ring-blue-500 focus:border-blue-500"
+            className="block  w-full p-2  text-sm text-grey-600 dark:text-grey-100 font-medium border-[1px] border-[#ececece1] dark:border-none bg-primary-400  rounded-lg  focus:ring-blue-500 focus:border-blue-500"
             placeholder="Search"
             required
           />

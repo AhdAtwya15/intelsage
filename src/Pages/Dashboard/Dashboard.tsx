@@ -8,8 +8,15 @@ import { SlLocationPin } from "react-icons/sl";
 import { RiMessageLine } from "react-icons/ri";
 import { AiOutlineGlobal } from "react-icons/ai";
 import { IoCallOutline } from "react-icons/io5";
-
+import Button from "../../Components/UI/Button";
+interface CardProps {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+}
 const Dashboard = () => {
+ 
+  
   const scans = [
     {
       domain: "mycooldomain.com",
@@ -126,13 +133,9 @@ const Dashboard = () => {
                       {asset.text}
                     </span>
                   </div>
-                  <span
-                    className={`px-5 py-1 rounded-md ${
-                      asset.status === "Safe" ? "safe" : "Compromised"
-                    } text-xs`}
-                  >
-                    {asset.status}
-                  </span>
+                  <Button  variant={asset.status === "Safe" ? "safe" : "compromised"} size="xsm">
+  {asset.status}
+</Button>
                 </div>
               ))}
             </div>
@@ -140,7 +143,7 @@ const Dashboard = () => {
         </div>
 
         <div className="col-span-10 md:col-span-3  space-y-4">
-          <div className="bg-primary-300 dark:border-none rounded-2xl shadow-lg text-center min-w-64 py-24">
+          <div className="bg-primary-300  rounded-2xl border-[1px] border-[#ececece1] dark:border-none text-center min-w-64 py-24">
             <h2 className="text-grey-100 font-medium text-lg mb-2">
               Detect Threats, Defend Fast
             </h2>
@@ -200,8 +203,8 @@ const Dashboard = () => {
   );
 };
 
-const Card = ({ title, value, icon }) => (
-  <div className="flex min-w-48 items-center bg-primary-400 rounded-lg p-4 dark:border-none  transition-colors ">
+const Card = ({ title, value, icon }: CardProps) => (
+  <div className="flex min-w-48 items-center font-roobert bg-primary-400 rounded-lg p-4 border-[1px] border-[#ececece1] dark:border-none  transition-colors ">
     <div className="text-3xl">{icon}</div>
     <div className="ml-4">
       <p className="text-sm font-medium text-grey-600 whitespace-nowrap mt-4">
