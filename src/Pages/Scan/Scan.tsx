@@ -27,7 +27,6 @@ const Scan = () => {
 
   const onSubmit: SubmitHandler<IScanData> = async (data) => {
     setIsLoading(true);
-
     try {
       const res = await axiosInstance.post(
         "/v1/scan/start",
@@ -41,12 +40,9 @@ const Scan = () => {
           },
         }
       );
-
       console.log("Response:", res.data);
-
-      
     } catch (error) {
-      console.error("Error starting scan:", error);     
+      console.error("Error starting scan:", error);
     } finally {
       setIsLoading(false);
     }
@@ -54,9 +50,9 @@ const Scan = () => {
 
   return (
     <div className="h-screen p-8 bg-primary-500 text-grey-100 font-roobert">
-      <Topbar pageTitle="Scan Page " />
+      <Topbar pageTitle="Scan Page" />
       <form
-        className="flex flex-col rounded-xl p-5 mt-8 bg-primary-400 border-[1px] border-[#ececece1] dark:border-none"
+        className="flex flex-col rounded-xl p-5 mt-5 bg-primary-400 border-[1px] border-[#ececece1] dark:border-none"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="font-medium text-lg mb-8">Start a New Scan</div>
@@ -68,25 +64,27 @@ const Scan = () => {
                 type="text"
                 placeholder="Scan name"
                 className={`bg-primary-400 text-sm w-72 pl-10 pr-10 py-3 rounded-lg text-grey-500 placeholder:text-[12px] placeholder-grey-500 focus:outline-none border-[0.5px] ${
-                  errors.scanName ? "border-red-500" : "border-[#e2e2e2] dark:border-grey-500"
+                  errors.scanName
+                    ? "border-red-500"
+                    : "border-[#e2e2e2] dark:border-grey-500"
                 }`}
                 {...register("scanName")}
               />
               {errors["scanName"] && <ErrorMsg msg={errors["scanName"]?.message} />}
-              
             </div>
             <div className="relative">
               <CiSearch className="absolute text-lg left-3 top-3 text-grey-500" />
               <input
                 type="text"
                 placeholder="Scan target"
-                className={`bg-primary-400 text-sm w-72 pl-10 pr-10 py-3 rounded-lg text-grey-500  placeholder:text-[12px] placeholder-grey-500 focus:outline-none border-[0.5px] ${
-                  errors.scanTarget ? "border-red-500" : "border-[#e2e2e2] dark:border-grey-500"
+                className={`bg-primary-400 text-sm w-72 pl-10 pr-10 py-3 rounded-lg text-grey-500 placeholder:text-[12px] placeholder-grey-500 focus:outline-none border-[0.5px] ${
+                  errors.scanTarget
+                    ? "border-red-500"
+                    : "border-[#e2e2e2] dark:border-grey-500"
                 }`}
                 {...register("scanTarget")}
               />
               {errors["scanTarget"] && <ErrorMsg msg={errors["scanTarget"]?.message} />}
-              
             </div>
           </div>
           <div className="ml-3 lg:ml-0 mt-8 lg:mt-0">
@@ -101,3 +99,4 @@ const Scan = () => {
 };
 
 export default Scan;
+

@@ -63,3 +63,21 @@ export interface IFormInputs{
     address1: string,
     address2: string,
 }
+
+export interface ICorrelations{
+    HIGH:number,
+    MEDIUM:number,
+    LOW:number,
+    INFO:number,
+}
+
+export interface IScanList{
+    scanId:string,
+    scanName:string,
+    scanTarget:string,
+    startDate:string,
+    endDate:string,
+    scanStatus:"RUNNING"|"FINISHED",
+    elementsFound:number,
+    correlations:ICorrelations
+}

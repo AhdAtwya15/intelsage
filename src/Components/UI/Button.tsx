@@ -11,12 +11,15 @@ const buttonVariants = cva(
         danger: "bg-red-900 dark:bg-[#c2344d] dark:text-white dark:hover:bg-red-700",
         outline: "border border-indigo-400 hover:text-white bg-transparent text-black hover:border-transparent hover:bg-indigo-600 dark:text-gray-700 dark:hover:text-white",
         safe: "bg-[#EDF7EC] text-[#61C454]",
-        compromised:"bg-[#FFEFEF] text-[#F04D4E]"
+        compromised:"bg-[#FFEFEF] text-[#F04D4E]",
+        rescan:"bg-[#FFFFFF] dark:bg-[#e4d6ff] border border-[#6366F1] dark:border-none text-[#6366F1] text-[13px] hover:bg-[#6366F1] hover:text-white dark:hover:bg-[#6366F1] dark:hover:text-[#FFFFFF] transition font-medium"
+        
       },
       size: {
         default: "p-5 rounded-xl w-full",
         sm: "text-xs px-9 py-2 rounded-lg",
-        xsm:"text-xs px-5 py-1 rounded-md"
+        xsm:"text-xs px-5 py-1 rounded-md",
+        md:"px-6 py-[6px] rounded-md"
       },
       fullWidth: {
         true: "w-full",

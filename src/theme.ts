@@ -197,7 +197,7 @@ toggleColorMode:()=>{}
 });
 
 export const useMode=():[Theme, IColorModeContext] =>{
-const [mode,setMode]=useState<"dark" | "light">("dark");
+const [mode,setMode]=useState<"dark" | "light">("light");
 const colorMode=useMemo(
   ()=>({
     toggleColorMode:()=>
