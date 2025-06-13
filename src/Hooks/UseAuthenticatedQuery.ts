@@ -9,13 +9,13 @@ interface IAuthenticatedQuery {
 }
 
 const UseAuthenticatedQuery = ({ queryKey, url, config }: IAuthenticatedQuery) => {
-return useQuery({
-    queryKey,
-    queryFn: async () => {
-        const response = await axiosInstance.get(url, config);
-        return response.data;
-    },
-    enabled: false,
+    return useQuery({
+        queryKey,
+        queryFn: async () => {
+            const response = await axiosInstance.get(url, config);
+            return response.data;
+        },
+        //refetchInterval: 10000,
     });
 };
 

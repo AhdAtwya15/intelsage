@@ -71,13 +71,45 @@ export interface ICorrelations{
     INFO:number,
 }
 
+export interface IAssetsList{
+    id:string,
+    target:string,
+    startDate:string,
+    status:"RUNNING"|"FINISHED"|"ABORTED",
+}
+export interface IPagination{
+    currentPage:number;
+    pageSize:number;
+    totalCount:string;
+    totalPages:number;
+}
+
 export interface IScanList{
-    scanId:string,
-    scanName:string,
-    scanTarget:string,
+    id:string,
+    name:string,
+    target:string,
     startDate:string,
     endDate:string,
-    scanStatus:"RUNNING"|"FINISHED",
-    elementsFound:number,
-    correlations:ICorrelations
+    status:"RUNNING"|"FINISHED"|"ABORTED",
+    elementsFound:number
+}
+
+export interface ISummary{
+    type:string,
+    typeName: string,
+    uniqueDataElement: number,
+    totalDataElement: number,
+    lastDataElementIdentified: string
+}
+
+export interface ISummariesList{
+    scanId: string;
+    summaries: ISummary[];
+}
+
+export interface IEventResult{
+    lastIdentified: string,
+    dataElement: string,
+    sourceDataElement: string,
+    sourceModule: string
 }

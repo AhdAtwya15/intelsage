@@ -1,16 +1,17 @@
 import { RiBuilding4Line } from "react-icons/ri";
 import { HiViewGrid } from "react-icons/hi";
 import { AiOutlineScan } from "react-icons/ai";
-import { IoSettingsOutline } from "react-icons/io5";
 import { useContext, useState } from "react";
 import { ColorModeContext } from "../../../theme";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { LuSunDim } from "react-icons/lu";
 import { useTheme } from "@mui/material/styles";
 import { IoClose, IoMenu } from "react-icons/io5";
+import { NavLink, useLocation } from "react-router-dom";
 
-interface SidebarIconProps {
-  icon: React.ReactNode;
+// تعريف نوع للـ state
+interface LocationState {
+  from?: string;
 }
 
 const Sidebar = () => {
@@ -18,11 +19,26 @@ const Sidebar = () => {
   const { toggleColorMode } = useContext(ColorModeContext);
   const [isDark, setIsDark] = useState(theme.palette.mode === "dark");
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation(); 
 
   const handleToggleTheme = () => {
     setIsDark(!isDark);
     toggleColorMode();
   };
+
+  const state = location.state as LocationState;
+  const from = state?.from;
+  const pathname = location.pathname;
+
+  const isAssetsActive =
+    pathname === "/assets" ||
+    (pathname.startsWith("/scanName") && from === "assets") ||
+    (pathname.startsWith("/scanType") && from === "assets");
+
+  const isScanActive =
+    pathname === "/scan" ||
+    (pathname.startsWith("/scanName") && from === "scan") ||
+    (pathname.startsWith("/scanType") && from === "scan");
 
   return (
     <>
@@ -34,10 +50,10 @@ const Sidebar = () => {
       </button>
 
       <div
-        className={`fixed top-0 left-0 h-full w-20 md:w-20 flex flex-col items-center py-4  transition-transform transform
-         bg-primary-400 z-50 ${
-           isOpen ? "translate-x-0" : "-translate-x-full"
-         } md:translate-x-0`}
+        className={`fixed top-0 left-0 h-full w-20 md:w-20 flex flex-col items-center py-4 transition-transform transform
+          bg-primary-400 z-50 ${
+            isOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0`}
       >
         <button
           className="absolute top-4 right-4 z-50 block md:hidden bg-gray-200 dark:bg-gray-700 p-2 rounded-full shadow-lg"
@@ -46,32 +62,52 @@ const Sidebar = () => {
           <IoClose size={24} className="text-gray-800 dark:text-white" />
         </button>
 
-        <div className="flex flex-col gap-8 flex-grow justify-center">
-          <SidebarIcon
-            icon={
-              <HiViewGrid
-                size={40}
-                className="rounded-full p-2 bg-gray-100 dark:bg-slate-700"
-              />
-            }
-          />
-          <SidebarIcon
-            icon={<RiBuilding4Line size="16" className="icon-color" />}
-          />
-          <SidebarIcon
-            icon={<AiOutlineScan size="16" className="icon-color" />}
-          />
-          <SidebarIcon
-            icon={<IoSettingsOutline size="16" className="icon-color" />}
-          />
-        </div>
+        <ul className="flex flex-col gap-8 flex-grow justify-center">
+          <li>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                `flex items-center justify-center rounded-full p-2  duration-300 hover:bg-gray-100 hover:dark:bg-slate-700 hover:text-black hover:dark:text-white ${
+                  isActive ?
+                  "bg-gray-100 dark:bg-slate-700 text-black dark:text-white"
+                  : "text-[#888888]"
+                }`
+              }
+            >
+              <HiViewGrid size={28} />
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/assets"
+              className={
+                isAssetsActive ?
+                  "flex items-center justify-center rounded-full p-2 bg-gray-100 dark:bg-slate-700 text-black dark:text-white"
+                  : "flex items-center justify-center rounded-full p-2 text-[#888888]  duration-300 hover:bg-gray-100 hover:dark:bg-slate-700 hover:text-black hover:dark:text-white"}
+            >
+              <RiBuilding4Line size={25} />
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/scan"           
+              className={
+                isScanActive ?
+                  "flex items-center justify-center rounded-full p-2 bg-gray-100 dark:bg-slate-700 text-black dark:text-white"
+                  : "flex items-center justify-center rounded-full p-2 text-[#888888]  duration-300 hover:bg-gray-100 hover:dark:bg-slate-700 hover:text-black hover:dark:text-white"}
+            >
+              <AiOutlineScan size={25} />
+            </NavLink>
+          </li>
+        </ul>
 
         <div
           className="mb-4 relative w-[28px] h-[53px] bg-gray-200 dark:bg-gray-700 rounded-full flex items-center transition-all cursor-pointer overflow-hidden"
           onClick={handleToggleTheme}
         >
           <div
-            className="absolute left-1 w-[18px] h-[18px] bg-white dark:bg-gray-300 rounded-full flex items-center justify-center transition-all "
+            className="absolute left-1 w-[18px] h-[18px] bg-white dark:bg-gray-300 rounded-full flex items-center justify-center transition-all"
             style={{ top: isDark ? "6px" : "30px" }}
           >
             {isDark ? (
@@ -87,18 +123,12 @@ const Sidebar = () => {
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-transparent z-40 md:hidden transition-opacity "
+          className="fixed inset-0 bg-transparent z-40 md:hidden transition-opacity"
           onClick={() => setIsOpen(false)}
         />
       )}
     </>
   );
 };
-
-const SidebarIcon = ({ icon }:  SidebarIconProps) => (
-  <div className="group relative flex items-center justify-center w-full cursor-pointer text-black dark:text-white">
-    {icon}
-  </div>
-);
 
 export default Sidebar;
