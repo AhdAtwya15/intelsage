@@ -1,65 +1,57 @@
-import Topbar from "../Topbar/Topbar";
-import { useState } from "react";
+import Topbar from "../../Components/Global/Topbar/Topbar";
+import { useEffect, useState } from "react";
 import UseAuthenticatedQuery from "../../Hooks/UseAuthenticatedQuery";
-import { IScanList } from "../../Interfaces";
-import React from "react";
-import ScanListTab from "../../Components/UI/ScansListTab";
+import { IAssetsList, IPagination } from "../../Interfaces";
+import AssetsListTab from "../../Components/UI/Tabels/AssetsListTab";
+import AssetsListSkeleton from "../../Components/UI/Skeletons/AssetsListSkeleton";
+import Paginator from "../../Components/UI/Paginator";
 
-import ScanListSkeleton from "../../Components/UI/ScanListSkeleton";
-
-const itemsNumOfPage=10;
 const Assets = () => {
-    const [currentPage,setCurrentPage]=useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(6);
+    const [expanded, setExpanded] = useState(false); 
 
-    const{data,refetch,isFetching}=UseAuthenticatedQuery({
-        queryKey:["scans"],
-        url:'v1/scan/list',
-        config:{
-            headers:{
-                "Content-Type": "application/json",
-            },
-        },
+    const { data, isLoading } = UseAuthenticatedQuery({
+        queryKey: ["scans", currentPage.toString(), pageSize.toString()],
+        url: `v1/scan/assets?page=${currentPage}&pageSize=${pageSize}`
     });
 
+    const assets: IAssetsList[] = data?.data.assets || [];
+    const pagination: IPagination =
+    data?.data.pagination || { currentPage: 1, pageSize: 6, totalCount: "0", totalPages: 1 };
 
-    const scans:IScanList[]=data?.data||[];
-    const totalItems = scans.length;
-    const totalPages = Math.ceil(totalItems / itemsNumOfPage);
-    const paginatedScans = scans.slice(
-     (currentPage - 1) * itemsNumOfPage,
-     currentPage * itemsNumOfPage
-    ); 
+    useEffect(() => {
+    if (data?.data.pagination?.pageSize && data.data.pagination.pageSize !== pageSize) {
+        setPageSize(data.data.pagination.pageSize);
+        }
+    }, [data, pageSize]);
 
-    React.useEffect(()=>{
-        refetch();
-    },[refetch]);
-    
-    const handleRescan=(scanId:string)=>{
-        console.log("rescan",scanId);
-    }
-    const handleDelete=(scanId:string)=>{
-        console.log("delete",scanId);
-
-    }
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
 return (
-    <div className="h-screen  p-8 bg-primary-500 text-grey-100 font-roobert">
-        <Topbar pageTitle="Assets"/>
-        {isFetching?(
-            <ScanListSkeleton/>
-        ):(
-            <ScanListTab
-                scans={paginatedScans}
-                totalPages={totalPages}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-                onRescan={handleRescan}
-                onDelete={handleDelete}/>
-        )}
+    <div className="h-screen py-5 px-4 bg-primary-500 text-grey-100 font-roobert">
+        <Topbar pageTitle="Assets" />
+            <div className="h-[575px]">
+                {isLoading ? (
+                <AssetsListSkeleton />
+                ) : (
+                <AssetsListTab assets={assets} />
+                )}
+            </div>
 
-
+            {!isLoading && (
+            <Paginator
+            totalPages={pagination.totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            expanded={expanded} 
+            setExpanded={setExpanded} 
+            />
+            )}
     </div>
-    )
-}
+    );
+};
 
-export default Assets
+export default Assets;

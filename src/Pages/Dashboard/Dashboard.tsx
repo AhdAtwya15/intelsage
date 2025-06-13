@@ -1,13 +1,9 @@
-import Topbar from "../Topbar/Topbar";
+import Topbar from "../../Components/Global/Topbar/Topbar";
 import { AiOutlineScan } from "react-icons/ai";
 import { LuShieldCheck } from "react-icons/lu";
 import LatestScansChart from "../../Components/LatestScansChart/LatestScansChart";
 import { PiBuildingsLight } from "react-icons/pi";
 import { TbShieldSearch } from "react-icons/tb";
-import { SlLocationPin } from "react-icons/sl";
-import { RiMessageLine } from "react-icons/ri";
-import { AiOutlineGlobal } from "react-icons/ai";
-import { IoCallOutline } from "react-icons/io5";
 import Button from "../../Components/UI/Button";
 interface CardProps {
   title: string;
@@ -57,7 +53,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="h-screen p-8 bg-primary-500  transition-colors ">
+    <div className="h-screen p-5 bg-primary-500  transition-colors ">
       <Topbar pageTitle="Main Dashboard" />
 
       <div className="grid grid-cols-10 gap-6 pt-6">
@@ -100,22 +96,18 @@ const Dashboard = () => {
             <div className="space-y-3">
               {[
                 {
-                  icon: <SlLocationPin />,
                   text: "102.54.237.XXX",
                   status: "Safe",
                 },
                 {
-                  icon: <RiMessageLine />,
                   text: "user@example.com",
                   status: "Safe",
                 },
                 {
-                  icon: <AiOutlineGlobal />,
                   text: "testsite.net",
                   status: "Compromised",
                 },
                 {
-                  icon: <IoCallOutline />,
                   text: "user@example.com",
                   status: "Safe",
                 },
@@ -125,9 +117,6 @@ const Dashboard = () => {
                   className="flex items-center justify-between dark:bg-[#2E394C] p-4 rounded-xl border-[1px] border-[#ececece1] dark:border-none "
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#EDEDED] dark:bg-transparent ">
-                    <span className="text-lg text-grey-400">{asset.icon}</span>
-                    </div>
                     
                     <span className="text-grey-100 text-xs">
                       {asset.text}
@@ -141,13 +130,14 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        
 
         <div className="col-span-10 md:col-span-3  space-y-4">
           <div className="bg-primary-300  rounded-2xl border-[1px] border-[#ececece1] dark:border-none text-center min-w-64 py-24">
             <h2 className="text-grey-100 font-medium text-lg mb-2">
               Detect Threats, Defend Fast
             </h2>
-            <p className="text-grey-600s text-xs mb-4">
+            <p className="text-grey-600 text-xs mb-4">
               Scan company assets for potential threats in real time
             </p>
             <button className="bg-black dark:bg-gray-700 text-white text-xs mt-6 px-12 py-3 rounded-md">
