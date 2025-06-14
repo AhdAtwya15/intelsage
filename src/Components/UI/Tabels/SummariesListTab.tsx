@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { ISummary } from "../../../Interfaces";
 
-
 interface IProps {
     summaries: ISummary[];
     scanId: string;
@@ -32,9 +31,7 @@ const SummariesListTab = ({ summaries, scanId }: IProps) => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td colSpan={4} className="py-2"></td>
-                        </tr>
+                        
                         {summaries.map((summary, index) => (
                             <tr
                                 key={index}

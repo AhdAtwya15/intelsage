@@ -12,11 +12,11 @@ interface LocationState {
 }
 
 const ScanName = () => {
+    const location = useLocation();
+    
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(8);
     const [expanded, setExpanded] = useState(false);
-
-    const location = useLocation();
 
     const { scanId } = useParams();
     const navigate = useNavigate();
@@ -61,6 +61,8 @@ return (
         icon={<MdOutlineArrowBackIos />}
         prevBtn={prevPage}
         /> 
+
+        
 
         <div className="h-[600px]">
             <SummariesListTab
