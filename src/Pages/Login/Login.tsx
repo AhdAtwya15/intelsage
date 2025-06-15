@@ -4,6 +4,8 @@ import { loginSchema } from "../../Validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import { useUser } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import ErrorMsg from "../../Components/UI/ErrorMsg";
 
 interface IFormInput {
@@ -13,6 +15,8 @@ interface IFormInput {
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useUser();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -21,8 +25,33 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = () => {
+  // تسجيل الدخول باستخدام API حقيقي
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsLoading(true);
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error('فشل تسجيل الدخول. تأكد من البيانات');
+      }
+      const result = await response.json();
+      // يفترض أن الاستجابة فيها { token, user }
+      localStorage.setItem('token', result.token);
+      setUser(result.user);
+      setIsLoading(false);
+      navigate('/');
+    } catch (error) {
+      setIsLoading(false);
+      alert(error.message || 'حدث خطأ أثناء تسجيل الدخول');
+    }
   };
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-0 h-screen bg-white font-roobert">

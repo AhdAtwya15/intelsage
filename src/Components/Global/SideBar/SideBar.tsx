@@ -7,9 +7,10 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { LuSunDim } from "react-icons/lu";
 import { useTheme } from "@mui/material/styles";
 import { IoClose, IoMenu } from "react-icons/io5";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useUser } from '../../../context/UserContext';
 
-// تعريف نوع للـ state
 interface LocationState {
   from?: string;
 }
@@ -20,6 +21,14 @@ const Sidebar = () => {
   const [isDark, setIsDark] = useState(theme.palette.mode === "dark");
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation(); 
+  const navigate = useNavigate();
+  const { setUser } = useUser();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/login');
+  };
 
   const handleToggleTheme = () => {
     setIsDark(!isDark);
@@ -117,6 +126,14 @@ const Sidebar = () => {
             )}
           </div>
         </div>
+        <button
+          onClick={handleLogout}
+         
+          className="flex flex-col items-center justify-center  p-2  hover:text-red-500 transition-colors mt-auto mb-4"
+        >
+          <LogoutIcon sx={{ color: '', fontSize: 24 }} />
+          <span className="text-xs  mt-1 font-bold"></span>
+        </button>
       </div>
 
       <div className="md:pl-20"></div>

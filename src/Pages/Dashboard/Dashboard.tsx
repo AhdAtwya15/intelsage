@@ -113,9 +113,12 @@ const Dashboard = () => {
               <span className="text-grey-100 text-lg font-medium">
                 Assets
               </span>
-              <button className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]">
-                See all
-              </button>
+              <button
+  className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]"
+  onClick={() => navigate('/assets')}
+>
+  See all
+</button>
             </div>
 
             <div className="space-y-3">
@@ -163,9 +166,12 @@ const Dashboard = () => {
               <span className="text-lg text-grey-100">
                 Latest scans
               </span>
-              <button className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]">
-                See all
-              </button>
+              <button
+  className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]"
+  onClick={() => navigate('/scan')}
+>
+  See all
+</button>
             </div>
 
             <div className="space-y-3 min-h-[400px] overflow-y-auto">
