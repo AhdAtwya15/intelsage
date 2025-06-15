@@ -5,6 +5,7 @@ import Login from "../Pages/Login/Login";
 import Scan from "../Pages/Scan/Scan";
 import Assets from "../Pages/Assets/Assets";
 import Layout from "../Components/Global/Layout/Layout";
+import ProtectedRoute from '../Routes/ProtectedRoute';
 
 import ScanName from "../Pages/ScanName/ScanName";
 import ScanType from "../Pages/ScanType/ScanType";
@@ -15,11 +16,11 @@ const Router = createBrowserRouter([
     element: <Layout />,
     children: [
       
-      { path: "/", element: <Dashboard /> },
-      { path: "/scan", element: <Scan /> },
-      { path: "/assets", element: <Assets/> },
-      { path:"/scanName/:scanId", element:<ScanName/>},
-      { path:"/scanType/:scanId/:eventRes", element:<ScanType/>}
+      { path: "/", element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+      { path: "/scan", element: <ProtectedRoute><Scan /></ProtectedRoute> },
+      { path: "/assets", element: <ProtectedRoute><Assets/></ProtectedRoute> },
+      { path:"/scanName/:scanId", element:<ProtectedRoute><ScanName/></ProtectedRoute>},
+      { path:"/scanType/:scanId/:eventRes", element:<ProtectedRoute><ScanType/></ProtectedRoute>}
     ],
   },
   {

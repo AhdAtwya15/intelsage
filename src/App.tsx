@@ -6,6 +6,7 @@ import Router from "./Router/Router";
 import { RouterProvider } from "react-router-dom";
 import 'flowbite';
 import { Toaster } from 'react-hot-toast';
+import { UserProvider } from './context/UserContext';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -20,32 +21,34 @@ function App() {
   }, [theme]);
 
   return (
-    <ColorModeContext value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline  />
-        <Suspense fallback={<div>Loading...</div>}>
-          <RouterProvider router={Router} />
-          <Toaster
-          toastOptions={{
-          success: {
-            style: {
-                backgroundColor: 'black', 
-                color: '#e0e0e0',          
-                },
-                className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414]'
-            },
-          error: {
-            style: {
-                backgroundColor: 'black', 
-                color: '#e0e0e0',          
-                },
-                className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414]'
-            },
-          }}
+    <UserProvider>
+      <ColorModeContext value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline  />
+          <Suspense fallback={<div>Loading...</div>}>
+            <RouterProvider router={Router} />
+            <Toaster
+            toastOptions={{
+            success: {
+              style: {
+                  backgroundColor: 'black', 
+                  color: '#e0e0e0',          
+                  },
+                  className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414]'
+              },
+            error: {
+              style: {
+                  backgroundColor: 'black', 
+                  color: '#e0e0e0',          
+                  },
+                  className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414]'
+              },
+            }}
 />
-        </Suspense>
-      </ThemeProvider>
-    </ColorModeContext>
+          </Suspense>
+        </ThemeProvider>
+      </ColorModeContext>
+    </UserProvider>
   );
 }
 
