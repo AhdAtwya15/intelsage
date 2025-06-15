@@ -5,8 +5,11 @@ import { IAssetsList, IPagination } from "../../Interfaces";
 import AssetsListTab from "../../Components/UI/Tabels/AssetsListTab";
 import AssetsListSkeleton from "../../Components/UI/Skeletons/AssetsListSkeleton";
 import Paginator from "../../Components/UI/Paginator";
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Assets = () => {
+    const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(6);
     const [expanded, setExpanded] = useState(false); 
@@ -32,7 +35,10 @@ const Assets = () => {
 
 return (
     <div className="h-screen py-5 px-4 bg-primary-500 text-grey-100 font-roobert">
-        <Topbar pageTitle="Assets" />
+        <Topbar
+        icon={<MdOutlineArrowBackIos />}
+        prevBtn={() => navigate("/")}
+        pageTitle="Assets" />
             <div className="h-[575px]">
                 {isLoading ? (
                 <AssetsListSkeleton />

@@ -1,4 +1,5 @@
 import Topbar from "../../Components/Global/Topbar/Topbar";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import Button from "../../Components/UI/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,7 +23,10 @@ interface IScanData {
   scanTarget: string;
 }
 
+import { useNavigate } from "react-router-dom";
+
 const Scan = () => {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [expanded, setExpanded] = useState(false);
   const queryClient = useQueryClient();
@@ -74,7 +78,11 @@ const Scan = () => {
 
   return (
     <div className="h-screen p-5 bg-primary-500 text-grey-100 font-roobert">
-      <Topbar pageTitle="Scan Page" />
+      <Topbar 
+  pageTitle="Scan Page"
+  icon={<MdOutlineArrowBackIos />} 
+  prevBtn={() => navigate('/')} 
+/>
       <form
         className="flex flex-col rounded-xl px-5 py-4 mt-4 bg-primary-400 border-[1px] border-[#ececece1] dark:border-none"
         onSubmit={handleSubmit(onSubmit)}
