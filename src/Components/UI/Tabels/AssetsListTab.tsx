@@ -11,7 +11,7 @@ const AssetsListTab = ({ assets }: IProps) => {
     const navigate=useNavigate()
 
     const handleAssetClick= (asset: IAssetsList) => {
-            if (asset.status !== "FINISHED") {
+            if (asset.status === "STARTING") {
                 toast.error("Scan is still in progress. Please wait until it finishes.");
                 return;
             }

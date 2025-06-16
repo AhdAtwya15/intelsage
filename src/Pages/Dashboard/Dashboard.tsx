@@ -8,6 +8,7 @@ import { PiBuildingsLight } from "react-icons/pi";
 import { TbShieldSearch } from "react-icons/tb";
 import UseAuthenticatedQuery from "../../Hooks/UseAuthenticatedQuery";
 import DashboardSkeleton from "../../Components/UI/Skeletons/DashboardSkeleton";
+import toast from "react-hot-toast";
 
 interface CardProps {
   title: string;
@@ -36,9 +37,18 @@ const Dashboard = () => {
 
   const assetsData: IAssetsList[] = assetsRes.data?.data.assets || [];
 
+  const handleAssetClick= (asset: IAssetsList) => {
+            if (asset.status === "STARTING") {
+                toast.error("Scan is still in progress. Please wait until it finishes.");
+                return;
+            }
+            navigate(`/scanName/${asset.id}`, { state: { from: 'assets' } })
+    };
+
   if (isLoading) {
     return <DashboardSkeleton/>
   }
+  
 
   return (
     <div className="h-screen p-5 bg-primary-500  transition-colors ">
@@ -70,11 +80,12 @@ const Dashboard = () => {
           </div>
 
           <LatestScansChart
-            data={(dashboard?.scansByYear || []).map((scan: IScanByYear) => ({
-              year: scan.year,
-              scans: Number(scan.count),
-            }))}
+          data={(dashboard?.scansByYear || []).map((scan: IScanByYear) => ({
+          year: scan.year,
+          scans: Number(scan.count),
+          }))}
           />
+
 
           <div className="border rounded-xl bg-primary-300 dark:border-none p-5">
             <div className="flex justify-between items-center mb-3">
@@ -94,7 +105,7 @@ const Dashboard = () => {
               assetsData?.map((asset: IAssetsList) => (
               <div key={asset.id}
               className="flex items-center justify-between dark:bg-[#2E394C] p-4 rounded-xl border-[1px] border-[#ececece1] dark:border-none cursor-pointer hover:bg-primary-200 transition"
-              onClick={() => asset?.id && navigate(`/scanName/${asset.id}`, { state: { from: 'assets' } })}
+              onClick={() => handleAssetClick(asset)}
               >
                 <div className="flex flex-col">
                   <span className="text-grey-100 text-xs">

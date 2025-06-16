@@ -91,7 +91,7 @@ export interface IAssetsList{
     id:string,
     target:string,
     startDate:string,
-    status:"RUNNING"|"FINISHED"|"ABORTED",
+    status:"RUNNING"|"FINISHED"|"STARTING",
 }
 export interface IPagination{
     currentPage:number;
@@ -106,7 +106,7 @@ export interface IScanList{
     target:string,
     startDate:string,
     endDate:string,
-    status:"RUNNING"|"FINISHED"|"ABORTED",
+    status:"RUNNING"|"FINISHED"|"STARTING",
     elementsFound:number
 }
 

@@ -8,17 +8,20 @@ import ErrorMsg from "../../Components/UI/ErrorMsg";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../Config/axios.config";
 import { ILoginRes } from "../../Interfaces";
-import { toast } from "react-toastify";
 import { useUser } from "../../context/useUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
 
 interface IFormInput {
   email: string;
   password: string;
 }
+interface IResError{
+  message:string
+}
 
 const Login = () => {
-  
+  const[errorMsgLogin,setErrorMsgLogin]=useState<string>("")
   const { setUser } = useUser();
   const navigate = useNavigate();
 
@@ -50,15 +53,16 @@ const Login = () => {
     },
     onSuccess: (result:ILoginRes) => {
             const token = result.data.token;
-  const user = result.data.user;
-  console.log("Token:", token);
-  console.log("User:", user);
-  localStorage.setItem("token", token);
-  setUser(user);
-  navigate("/");
+            const user = result.data.user;
+            localStorage.setItem("token", token);
+            setUser(user);
+            navigate("/");
     },
-    onError: () => {
-      toast.error("Can't log in, Please try again")
+    onError: (error: AxiosError<IResError>) => {
+      
+      const apiMessage = error.response?.data?.message;
+      setErrorMsgLogin(apiMessage ?? "Can't log in, please try again")
+      //toast.error(apiMessage ?? "Can't log in, please try again");
     },
   });
 
@@ -78,6 +82,12 @@ const Login = () => {
             Log in to monitor your company’s digital footprint and uncover
             potential threats before they become risks.
           </p>
+          {
+            errorMsgLogin &&
+            <div className="p-4 mb-6 text-sm text-red-800 rounded-lg bg-red-50 " role="alert">
+              <span className="font-medium">{errorMsgLogin}</span> 
+            </div>
+          }
           <form className="space-y-6 w-full" onSubmit={handleSubmit(onSubmit)}>
             <div className="input-container relative w-full">
               <Input

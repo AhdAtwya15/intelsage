@@ -51,7 +51,7 @@ const ScanListTab = ({ scans }: IProps) => {
     });
 
     const handleScanClick = (scan: IScanList) => {
-        if (scan.status !== "FINISHED") {
+        if (scan.status === "STARTING") {
             toast.error("Scan is still in progress.Please wait until it finishes.");
             return;
         }

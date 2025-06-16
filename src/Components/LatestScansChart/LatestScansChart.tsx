@@ -41,16 +41,15 @@ const LatestScansChart = ({ data }: LatestScansChartProps) => {
             tick={{ fill: "var(--color-grey-100)", fontSize: 14, fontWeight: 500 }}
             tickLine={false}
           />
+
           <YAxis
-            tick={{ fill: "var(--color-grey-100)", fontSize: 14, fontWeight: 500 }}
-            className="dark:fill-gray-400"
-            tickFormatter={(value) => (value === 0 ? "0" : `${value / 1000}k`)}
-            domain={[0, 100000]}
-            ticks={[0, 10000, 20000, 50000, 100000]}
-            axisLine={false}
-            minTickGap={10}
-            interval="preserveStartEnd"
+          tick={{ fill: "var(--color-grey-100)", fontSize: 14, fontWeight: 500 }}
+          className="dark:fill-gray-400"
+          tickFormatter={(value) => `${value}`}
+          domain={[0, 'dataMax + 14']}
           />
+
+
           <Tooltip
             formatter={(value) => `${(value as number).toLocaleString()} scans`}
             contentStyle={{ backgroundColor: "rgb(255 255 255)", color: "rgb(0 0 0)", borderRadius: "8px", border: "1px solid rgb(229 231 235)" }}

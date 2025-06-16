@@ -27,7 +27,7 @@ const Input = forwardRef(
         />
         {label && (
           <label
-          className={`text-md px-3 py-1 bg-white absolute mb-2 bottom-14 left-9 transform translate-y-1/2 transition-colors duration-200 ${
+          className={`text-md px-3 py-1 bg-[#FFFFFF] absolute mb-2 bottom-14 left-9 transform translate-y-1/2 transition-colors duration-200 ${
             isFocused || rest.value ? "text-black" : "text-gray-400"
           }`}
         >

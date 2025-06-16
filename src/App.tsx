@@ -10,7 +10,6 @@ function App() {
   const [theme, colorMode] = useMode();
 
   useEffect(() => {
-    console.log("Current Theme:", theme.palette);
     if (theme.palette.mode !== "dark") {
       document.documentElement.classList.remove("dark");
     } else {
@@ -31,14 +30,14 @@ function App() {
                   backgroundColor: 'black',
                   color: '#e0e0e0',
                 },
-                className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414]'
+                className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414] font-roobert'
               },
               error: {
                 style: {
                   backgroundColor: 'black',
                   color: '#e0e0e0',
                 },
-                className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414]'
+                className: 'dark:!bg-[#FFFFFF] dark:!text-[#141414] font-roobert'
               },
             }}
           />
