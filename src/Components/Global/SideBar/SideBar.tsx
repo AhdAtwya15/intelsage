@@ -9,7 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useUser } from '../../../context/UserContext';
+import { useUser } from "../../../context/useUser"; 
 
 interface LocationState {
   from?: string;
@@ -112,7 +112,7 @@ const Sidebar = () => {
         </ul>
 
         <div
-          className="mb-4 relative w-[28px] h-[53px] bg-gray-200 dark:bg-gray-700 rounded-full flex items-center transition-all cursor-pointer overflow-hidden"
+          className="mb-6 relative w-[28px] h-[53px] bg-gray-200 dark:bg-gray-700 rounded-full flex items-center transition-all cursor-pointer overflow-hidden"
           onClick={handleToggleTheme}
         >
           <div
@@ -128,8 +128,7 @@ const Sidebar = () => {
         </div>
         <button
           onClick={handleLogout}
-         
-          className="flex flex-col items-center justify-center  p-2  hover:text-red-500 transition-colors mt-auto mb-4"
+          className="flex flex-col items-center justify-center  p-2  hover:text-red-500 transition-colors mt-auto mb-3"
         >
           <LogoutIcon sx={{ color: '', fontSize: 24 }} />
           <span className="text-xs  mt-1 font-bold"></span>

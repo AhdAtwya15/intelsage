@@ -1,25 +1,33 @@
-import { Navigate } from 'react-router-dom';
+import { JSX, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const navigate = useNavigate();
   const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
   if (!token) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: '#fff',
-        color: '#333',
-        fontSize: '2rem',
-        fontWeight: 'bold',
-        direction: 'rtl',
-        zIndex: 9999
-      }}>
-        يجب تسجيل الدخول أولاً
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: '#f9f9f9',
+        }}
+      >
+        <CircularProgress />
       </div>
     );
   }
+
   return children;
 };
 

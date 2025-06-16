@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { IAssetsList } from "../../Interfaces";
+import { IAssetsList, IDashboardData, IDashboardScan, IScanByYear } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../Components/Global/Topbar/Topbar";
 import { AiOutlineScan } from "react-icons/ai";
@@ -7,9 +6,8 @@ import { LuShieldCheck } from "react-icons/lu";
 import LatestScansChart from "../../Components/LatestScansChart/LatestScansChart";
 import { PiBuildingsLight } from "react-icons/pi";
 import { TbShieldSearch } from "react-icons/tb";
-import Button from "../../Components/UI/Button";
-import axios from "axios";
-import { toast } from "react-toastify";
+import UseAuthenticatedQuery from "../../Hooks/UseAuthenticatedQuery";
+import DashboardSkeleton from "../../Components/UI/Skeletons/DashboardSkeleton";
 
 interface CardProps {
   title: string;
@@ -20,56 +18,26 @@ interface CardProps {
 const Dashboard = () => {
   
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [dashboardData, setDashboardData] = useState<any>(null);
-  const [assetsData, setAssetsData] = useState<any>(null);
-  
 
 
-  function getDashboard() {
-    setIsLoading(true);
-    axios
-      .get(`http://localhost:3000/api/v1/dashboard`)
-      .then((res) => {
-        console.log('API Response!', res.data.data);
-        
-        setDashboardData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Error fetching Data!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
-  
-  function getAssets() {
-    setIsLoading(true);
-    axios
-      .get(`http://localhost:3000/api/v1/scan/assets`)
-      .then((res) => {
-        console.log('API Response!', res.data.data);
-        
-        setAssetsData(res.data.data.assets);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Error fetching Data!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
 
-  
-  useEffect(() => {
-    getDashboard();
-    getAssets();
-  }, []);
+  const { data ,isLoading} = UseAuthenticatedQuery({
+        queryKey: ["dash"], 
+        url: `/v1/dashboard`
+    });
+
+  const dashboard: IDashboardData | null = data?.data || null;
+
+
+  const assetsRes = UseAuthenticatedQuery({
+    queryKey: ["scans"],
+    url: `v1/scan/assets`
+  });
+
+  const assetsData: IAssetsList[] = assetsRes.data?.data.assets || [];
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <DashboardSkeleton/>
   }
 
   return (
@@ -81,30 +49,30 @@ const Dashboard = () => {
           <div className="grid xl:grid-cols-4  md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-4">
             <Card
               title="Total Scans"
-              value={dashboardData?.totalScans ?? "0"}
-              icon={<AiOutlineScan className=" icon1 text-4xl" />}
+              value={dashboard?.totalScans ?? "0"}
+              icon={<AiOutlineScan className=" text-[#34B1FF] rounded-full border-[8px] border-[#E6F3FC] bg-[#E6F3FC]  text-4xl" />}
             />
             <Card
               title="Total Assets"
-              value={dashboardData?.totalAssets ?? "0"}
-              icon={<PiBuildingsLight className=" icon2 text-4xl" />}
+              value={dashboard?.totalAssets ?? "0"}
+              icon={<PiBuildingsLight className=" text-[#9D51FF] rounded-full border-[8px] border-[#F6EFFF] bg-[#F6EFFF]  text-4xl" />}
             />
             <Card
               title="Ongoing Scan"
-              value={dashboardData?.ongoingScans ?? "0"}
-              icon={<TbShieldSearch className=" icon3 text-4xl" />}
+              value={dashboard?.ongoingScans ?? "0"}
+              icon={<TbShieldSearch className=" text-[#F3E026] rounded-full border-[8px] border-[#EBDC5A26] bg-[#EBDC5A26]  text-4xl" />}
             />
             <Card
               title="Finished Scan"
-              value={dashboardData?.finishedScans ?? "0"}
-              icon={<LuShieldCheck className=" icon4 text-4xl" />}
+              value={dashboard?.finishedScans ?? "0"}
+              icon={<LuShieldCheck className=" text-[#3AC344] rounded-full border-[8px] border-[#E6FCE8] bg-[#E6FCE8] text-4xl" />}
             />
           </div>
 
           <LatestScansChart
-            data={(dashboardData?.scansByYear || []).map((item: any) => ({
-              year: item.year,
-              scans: Number(item.count),
+            data={(dashboard?.scansByYear || []).map((scan: IScanByYear) => ({
+              year: scan.year,
+              scans: Number(scan.count),
             }))}
           />
 
@@ -114,33 +82,45 @@ const Dashboard = () => {
                 Assets
               </span>
               <button
-  className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]"
-  onClick={() => navigate('/assets')}
->
-  See all
-</button>
+              className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]"
+              onClick={() => navigate('/assets')}
+              >
+                See all
+              </button>
             </div>
 
             <div className="space-y-3">
-            {assetsData?.length > 0 ? 
-  assetsData?.map((asset: IAssetsList, index: number) => (
-    <div key={index} className="flex items-center justify-between dark:bg-[#2E394C] p-4 rounded-xl border-[1px] border-[#ececece1] dark:border-none cursor-pointer hover:bg-primary-200 transition"
-      onClick={() => asset?.id && navigate(`/scanName/${asset.id}`, { state: { from: 'assets' } })}
-    >
-      <div className="flex flex-col">
-        <span className="text-grey-100 text-xs">
-          {asset?.target}
-        </span>
-      </div>
-      <Button variant="safe" size="xsm">
-        {asset?.status}
-      </Button>
-    </div>
-  )) : <p className="text-center"> NO ASSETS</p>}
-
-
-
-
+              {assetsData?.length > 0 ? 
+              assetsData?.map((asset: IAssetsList) => (
+              <div key={asset.id}
+              className="flex items-center justify-between dark:bg-[#2E394C] p-4 rounded-xl border-[1px] border-[#ececece1] dark:border-none cursor-pointer hover:bg-primary-200 transition"
+              onClick={() => asset?.id && navigate(`/scanName/${asset.id}`, { state: { from: 'assets' } })}
+              >
+                <div className="flex flex-col">
+                  <span className="text-grey-100 text-xs">
+                    {asset?.target}
+                  </span>
+                </div>
+                <div
+                className={`text-xs px-5 py-1 rounded-md
+                  ${
+                  asset?.status === "RUNNING"
+                  ? "bg-[#6365f14b] text-[#6366F1]"
+                  : asset?.status === "FINISHED"
+                  ? "bg-[#01b4343a] text-[#01B433]"
+                  : "bg-[#bc9d0028] text-[#BC9E00]"
+                  }
+                `}>
+                  {asset?.status}
+                </div>
+              </div>
+              ))
+              :(
+              <p className="text-center">
+                NO ASSETS
+              </p>
+              )
+              }
             </div>
           </div>
         </div>
@@ -167,45 +147,56 @@ const Dashboard = () => {
                 Latest scans
               </span>
               <button
-  className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]"
-  onClick={() => navigate('/scan')}
->
-  See all
-</button>
+              className="bg-black dark:bg-gray-700 text-white text-sm rounded-md w-[68px] h-[33px]"
+              onClick={() => navigate('/scan')}
+              >
+              See all
+              </button>
             </div>
 
             <div className="space-y-3 min-h-[400px] overflow-y-auto">
-              {dashboardData?.latestScans?.length > 0 ?
-                dashboardData?.latestScans?.map((scan: any, index: number) => (
-                   <div
-                     key={index}
-                     className="flex items-center justify-between p-3 rounded-md bg-transparent"
-                    
-                   >
-                     <div>
-                       <p className="text-sm font-medium text-grey-100 mb-2">
-                         {scan?.name || "Unknown Asset"}
-                       </p>
-                       <p className="text-xs text-grey-600">
-                         {new Date(scan?.startDate).toLocaleString()}
-                       </p>
-                     </div>
-                     <div className="flex flex-col items-end gap-1">
-                       <span className="text-sm font-semibold text-grey-100 mb-2">
-                         {scan?.elementsFound|| 0}
-                       </span>
-                       <div className="flex items-center gap-1">
-                         <span
-                           className="w-[8px] h-[8px] rounded-sm"
-                           style={{ backgroundColor: "#34B1FF" }}
-                         ></span>
-                         <span className="text-sm font-semibold text-grey-100">
-                           {scan?.status || "Finished"}
-                         </span>
-                       </div>
-                     </div>
-                   </div>
-                 )) : <p className="text-center">NO Latest Scans</p>}
+              {Array.isArray(dashboard?.latestScans) && dashboard?.latestScans.length > 0 ? (
+                    dashboard.latestScans.map((scan: IDashboardScan) => (
+                    <div
+                      key={scan.id}
+                      className="flex items-center justify-between p-3 rounded-md bg-transparent"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-grey-100 mb-2">
+                            {scan?.name || "Unknown Asset"}
+                        </p>
+                        <p className="text-xs text-grey-600">
+                            {new Date(scan?.startDate).toLocaleString()}
+                        </p>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-sm font-semibold text-grey-100 mb-2">
+                          {scan?.elementsFound|| 0}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`w-[8px] h-[8px] rounded-sm mb-[2px]
+                              ${
+                                scan.status === "RUNNING"
+                                ? "bg-[#6366F1]"
+                                : scan.status === "FINISHED"
+                                ? "bg-[#01B433]"
+                                : "bg-[#BC9E00]"
+                              }
+                            `}
+                          />
+
+                          <span className="text-sm font-semibold text-grey-100">
+                            {scan?.status || "Finished"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    ))
+                  )
+                  :(
+                      <p className="text-center">NO Latest Scans</p>
+                    )}
             </div>
           </div>
         </div>

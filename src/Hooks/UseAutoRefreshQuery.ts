@@ -7,15 +7,14 @@ interface IAuthenticatedQuery {
     url: string;
     config?: AxiosRequestConfig; 
 }
-
-const UseAuthenticatedQuery = ({ queryKey, url, config }: IAuthenticatedQuery) => {
+const UseAutoRefreshQuery = ({ queryKey, url, config }: IAuthenticatedQuery) => {
     return useQuery({
         queryKey,
-        queryFn: async () => {
+            queryFn: async () => {
             const response = await axiosInstance.get(url, config);
             return response.data;
-        },
+            },
+        refetchInterval: 10000, 
     });
 };
-
-export default UseAuthenticatedQuery;
+export default UseAutoRefreshQuery;

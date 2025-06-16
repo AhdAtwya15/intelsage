@@ -102,7 +102,7 @@ const Scan = () => {
                 }`}
                 {...register("scanName")}
               />
-              <div className="error-container">
+              <div className="h-[1px]">
                 {errors["scanName"] && <ErrorMsg msg={errors["scanName"]?.message} />}
               </div>
             </div>
@@ -118,7 +118,7 @@ const Scan = () => {
                 }`}
                 {...register("scanTarget")}
               />
-              <div className="error-container">
+              <div className="h-[1px]">
                 {errors["scanTarget"] && <ErrorMsg msg={errors["scanTarget"]?.message} />}
               </div>
             </div>

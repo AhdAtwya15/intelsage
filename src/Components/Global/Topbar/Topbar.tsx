@@ -6,9 +6,10 @@ interface IProps{
   pageTitle:string;
   icon?:ReactNode;
   secondTitle?:string;
+  thirdTitle?:string
   prevBtn?:()=>void;
 }
-export default function Topbar({pageTitle,secondTitle,icon,prevBtn}:IProps) {
+export default function Topbar({pageTitle,secondTitle,thirdTitle,icon,prevBtn}:IProps) {
   const location = useLocation();
   const isScanPage = location.pathname === "/scan";
   return (
@@ -18,16 +19,23 @@ export default function Topbar({pageTitle,secondTitle,icon,prevBtn}:IProps) {
             <button className="text-[#717171] text-xl mt-[3px]" onClick={prevBtn}>
               {icon}
             </button>
-            {
-              secondTitle?
-              <span className="  font-roobert font-medium text-[#8E8E8E]  text-lg  ">
-                {pageTitle} 
-                <span className="text-grey-100"> / {secondTitle}</span>
-              </span>:
-            <span className="  font-roobert font-medium  text-lg  ">
-              {pageTitle}
-            </span>
-            }  
+            <span className="font-roobert font-medium text-lg">
+              {thirdTitle ? (
+              <>
+                <span className="text-[#8E8E8E]">{pageTitle} / {secondTitle} / </span>
+                <span className="text-grey-100">{thirdTitle}</span>
+              </>
+              ) : secondTitle ? (
+              <>
+                <span className="text-[#8E8E8E]">{pageTitle} / </span>
+                <span className="text-grey-100">{secondTitle}</span>
+              </>
+              )
+              :
+              (
+                <span className="text-grey-100">{pageTitle}</span>
+              )}
+          </span>
           </div>
           :<div>
             <span className="  font-roobert font-medium  text-lg  ">

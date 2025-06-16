@@ -3,10 +3,14 @@ import Button from "../../Components/UI/Button";
 import { loginSchema } from "../../Validation";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
-import { useUser } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import ErrorMsg from "../../Components/UI/ErrorMsg";
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../../Config/axios.config";
+import { ILoginRes } from "../../Interfaces";
+import { toast } from "react-toastify";
+import { useUser } from "../../context/useUser";
+import { useEffect } from "react";
 
 interface IFormInput {
   email: string;
@@ -14,9 +18,17 @@ interface IFormInput {
 }
 
 const Login = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  
   const { setUser } = useUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/"); 
+    }
+  }, [navigate]);
+
   const {
     register,
     handleSubmit,
@@ -25,33 +37,35 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  // تسجيل الدخول باستخدام API حقيقي
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('http://localhost:3000/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  const loginMutation = useMutation({
+    mutationFn: async (inputsData: IFormInput) => {
+      const {data} = await axiosInstance.post(
+        "/v1/auth/login",
+        {
+          email: inputsData.email,
+          password: inputsData.password,
         },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error('فشل تسجيل الدخول. تأكد من البيانات');
-      }
-      const result = await response.json();
-      // يفترض أن الاستجابة فيها { token, user }
-      localStorage.setItem('token', result.token);
-      setUser(result.user);
-      setIsLoading(false);
-      navigate('/');
-    } catch (error) {
-      setIsLoading(false);
-      alert(error.message || 'حدث خطأ أثناء تسجيل الدخول');
-    }
+      );
+      return data;
+    },
+    onSuccess: (result:ILoginRes) => {
+            const token = result.data.token;
+  const user = result.data.user;
+  console.log("Token:", token);
+  console.log("User:", user);
+  localStorage.setItem("token", token);
+  setUser(user);
+  navigate("/");
+    },
+    onError: () => {
+      toast.error("Can't log in, Please try again")
+    },
+  });
+
+  
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    loginMutation.mutate(data)
+    
   };
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-0 h-screen bg-white font-roobert">
@@ -91,13 +105,17 @@ const Login = () => {
               <Button
                 type="submit"
                 className="mb-4 w-full"
-                isLoading={isLoading}
+                isLoading={loginMutation.status === "pending"}
               >
                 Log in
               </Button>
               <p className="text-md text-gray-400 mt-4">
                 Can’t log in?{" "}
-                <a href="#" className="text-black hover:underline">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ahdatwya@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black hover:underline"
+                >
                   Contact us
                 </a>
               </p>

@@ -13,9 +13,12 @@ const SummariesListTab = ({ summaries, scanId }: IProps) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const handleSummaryClick = (scanId: string, eventRes: string) => {
+    const handleSummaryClick = (scanId: string, eventRes: string, typeName: string) => {
         const state = location.state as LocationState; 
-        navigate(`/scanType/${scanId}/${eventRes}`, { state }); 
+        navigate(`/scanType/${scanId}/${eventRes}` ,
+            {
+                state: { ...state, typeName },
+            });
     };
 
     return (
@@ -31,11 +34,13 @@ const SummariesListTab = ({ summaries, scanId }: IProps) => {
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <tr>
+                            <td colSpan={4} className="py-2"></td>
+                        </tr>
                         {summaries.map((summary, index) => (
                             <tr
                                 key={index}
-                                onClick={() => handleSummaryClick(scanId, summary.type)}
+                                onClick={() => handleSummaryClick(scanId, summary.type, summary.typeName)}
                                 className={`text-grey-100 text-sm font-medium text-[13px] hover:bg-primary-200 transition-colors duration-200 hover:cursor-pointer
                                     ${index % 2 === 0 ? 'border-y border-[#F3F3F3] dark:border-gray-700 hover:border-transparent' : ''}
                                     ${index === 0 ? 'border-t-0' : ''}

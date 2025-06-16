@@ -5,7 +5,7 @@ import { IEventResult, IPagination } from "../../Interfaces";
 import Topbar from "../../Components/Global/Topbar/Topbar";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import EventResultTab from "../../Components/UI/Tabels/EventResultTab";
-// import EventResultSkeleton from "../../Components/UI/Skeletons/EventResultSkeleton";
+import EventResultSkeleton from "../../Components/UI/Skeletons/EventResultSkeleton";
 import Paginator from "../../Components/UI/Paginator";
 
 interface LocationState {
@@ -19,6 +19,7 @@ const ScanType = () => {
 
     const { scanId,eventRes } = useParams();
     const navigate = useNavigate();
+    const state = location.state as { typeName?: string };
 
     const prevScanNamePage= () => {
         const state = location.state as LocationState;
@@ -51,17 +52,14 @@ return (
         <Topbar
         pageTitle="Scan Name"
         secondTitle="Scan Type"
+        thirdTitle={state.typeName}
         icon={<MdOutlineArrowBackIos />}
         prevBtn={prevScanNamePage}
         /> 
         
-        <div className="h-[600px]">
-            <EventResultTab
-            eventResult={eventResult}  
-            />
-        </div>
+    
 
-        {/* <div className="h-[600px]">
+        <div className="h-[600px]">
             {
             isLoading?
             <EventResultSkeleton/>
@@ -71,7 +69,7 @@ return (
             
             />
             }
-        </div> */}
+        </div>
 
         {!isLoading && (
         <Paginator

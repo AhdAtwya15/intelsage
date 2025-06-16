@@ -8,7 +8,7 @@ export interface IColorShades {
     700: string;
     800: string;
     900: string;
-  }
+}
 
 export interface IThemeTokens {
     grey: IColorShades;
@@ -71,6 +71,22 @@ export interface ICorrelations{
     INFO:number,
 }
 
+export interface IUSerRes{
+    id: string,
+    email: string,
+    role: string
+
+}
+export interface ITokenRes{
+    user: IUSerRes
+    token:string;
+}
+
+export interface ILoginRes{
+    data:ITokenRes;
+    
+}
+
 export interface IAssetsList{
     id:string,
     target:string,
@@ -112,4 +128,37 @@ export interface IEventResult{
     dataElement: string,
     sourceDataElement: string,
     sourceModule: string
+}
+
+export interface User {
+    id: string;
+    email: string;
+    role: string;
+}
+
+export interface UserContextType {
+    user: User | null;
+    setUser: (user: User | null) => void;
+}
+
+export interface IDashboardScan{
+    id:string,
+    name:string,
+    startDate:string,
+    endDate:string,
+    status:"RUNNING"|"FINISHED"|"STARTING",
+    elementsFound:number
+}
+export interface IScanByYear {
+    year: number;
+    count: string;
+}
+export interface IDashboardData{
+    totalScans: string,
+    totalAssets: string,
+    ongoingScans: string,
+    finishedScans: string,
+    latestScans: IDashboardScan[];
+    assetNames: string[];
+    scansByYear: IScanByYear[];
 }

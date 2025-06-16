@@ -1,22 +1,22 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import UseAuthenticatedQuery from "../../Hooks/UseAuthenticatedQuery";
 import { useEffect, useState } from "react";
 import { IPagination,  ISummary } from "../../Interfaces";
 import Topbar from "../../Components/Global/Topbar/Topbar";
 import SummariesListTab from "../../Components/UI/Tabels/SummariesListTab";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-// import SummariesListSkeleton from "../../Components/UI/Skeletons/SummariesListSkeleton";
+import SummariesListSkeleton from "../../Components/UI/Skeletons/SummariesListSkeleton";
 import Paginator from "../../Components/UI/Paginator";
+import UseAutoRefreshQuery from "../../Hooks/UseAutoRefreshQuery";
 interface LocationState {
     from?: string;
 }
 
 const ScanName = () => {
-    const location = useLocation();
-    
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(8);
     const [expanded, setExpanded] = useState(false);
+
+    const location = useLocation();
 
     const { scanId } = useParams();
     const navigate = useNavigate();
@@ -33,9 +33,10 @@ const ScanName = () => {
         }
     };
 
-    const { data,isLoading} = UseAuthenticatedQuery({
+    const { data,isLoading} = UseAutoRefreshQuery({
         queryKey: ["scans", currentPage.toString(), pageSize.toString()], 
         url: `v1/scan/summaries/${scanId}?page=${currentPage}&pageSize=${pageSize}`, 
+
     });
 
     const summaries: ISummary[] = data?.data.summaries || [];
@@ -58,19 +59,11 @@ return (
     <div className="h-screen p-5 bg-primary-500 text-grey-100 font-roobert">
         <Topbar
         pageTitle="Scan Name"
+        secondTitle="Summaries"
         icon={<MdOutlineArrowBackIos />}
         prevBtn={prevPage}
         /> 
-
-        
-
         <div className="h-[600px]">
-            <SummariesListTab
-                summaries={summaries}
-                scanId={scanId!}
-        />
-        </div>
-        {/* <div className="h-[600px]">
             {
             isLoading?
             <SummariesListSkeleton/>
@@ -81,7 +74,7 @@ return (
                 />
             )
             }
-        </div> */}
+        </div>
         
         {!isLoading && (
         <Paginator
