@@ -34,19 +34,22 @@ const ScanName = () => {
     };
 
     const { data,isLoading} = UseAutoRefreshQuery({
-        queryKey: ["scans", currentPage.toString(), pageSize.toString()], 
+        queryKey: ["summaries", currentPage.toString(), pageSize.toString()], 
         url: `v1/scan/summaries/${scanId}?page=${currentPage}&pageSize=${pageSize}`, 
 
     });
 
-    const summaries: ISummary[] = data?.data.summaries || [];
+    const summaries: ISummary[] = data?.data?.summaries || [];
+
     const pagination: IPagination =
-        data?.pagination || { currentPage: 1, pageSize: 8, totalCount: "0", totalPages: 1 };
+    data?.data?.pagination || { currentPage: 1, pageSize: 8, totalCount: "0", totalPages: 1 };
+
 
     useEffect(() => {
-            if (data?.pagination?.pageSize && data.pagination.pageSize !== pageSize) {
-                setPageSize(data.pagination.pageSize);
-            }
+            if (data?.data?.pagination?.pageSize && data.data.pagination.pageSize !== pageSize) {
+                setPageSize(data.data.pagination.pageSize);
+                }
+
         }, [data, pageSize]);
     
     const handlePageChange = (page: number) => {
