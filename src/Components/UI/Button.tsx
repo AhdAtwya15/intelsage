@@ -10,7 +10,8 @@ const buttonVariants = cva(
         default: "bg-black dark:bg-[#FFFFFF] hover:opacity-75  duration-300  disabled:bg-opacity-50 dark:text-black ", 
         danger: "bg-red-600 hover:bg-red-800 text-white ocus:ring-4 focus:outline-none focus:ring-red-300 font-medium",
         outline: "border border-indigo-400 hover:text-white bg-transparent text-black hover:border-transparent hover:bg-indigo-600 dark:text-gray-700 dark:hover:text-white",
-        rescan:"bg-[#FFFFFF] dark:bg-[#e4d6ff] border border-[#6366F1] dark:border-transparent text-[#6366F1] text-[13px] hover:bg-[#6366F1] hover:text-white dark:hover:bg-[#6366F1] dark:hover:text-[#FFFFFF] transition  font-medium"
+        rescan:"bg-[#FFFFFF] dark:bg-[#e4d6ff] border border-[#6366F1] dark:border-transparent text-[#6366F1] text-[13px] hover:bg-[#6366F1] hover:text-white dark:hover:bg-[#6366F1] dark:hover:text-[#FFFFFF] transition  font-medium",
+        analyze:"bg-[#FFFFFF] dark:bg-[#60a1e2] border border-[#6366F1] dark:border-transparent text-[#1B75D0] text-[13px] hover:bg-[#1B75D0] hover:text-white dark:hover:bg-[#1B75D0] dark:hover:text-[#FFFFFF] transition  font-medium"
         
       },
       size: {

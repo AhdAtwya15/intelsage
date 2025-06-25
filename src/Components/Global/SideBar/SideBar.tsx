@@ -1,6 +1,7 @@
 import { RiBuilding4Line } from "react-icons/ri";
 import { HiViewGrid } from "react-icons/hi";
-import { AiOutlineScan } from "react-icons/ai";
+import { AiOutlineScan } from "react-icons/ai"
+import { TbShieldSearch } from "react-icons/tb";
 import { useContext, useState } from "react";
 import { ColorModeContext } from "../../../theme";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -107,6 +108,20 @@ const Sidebar = () => {
                   : "flex items-center justify-center rounded-full p-2 text-[#888888]  duration-300 hover:bg-gray-100 hover:dark:bg-slate-700 hover:text-black hover:dark:text-white"}
             >
               <AiOutlineScan size={25} />
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/threat"           
+              className={({ isActive }) =>
+                `flex items-center justify-center rounded-full p-2  duration-300 hover:bg-gray-100 hover:dark:bg-slate-700 hover:text-black hover:dark:text-white ${
+                  isActive ?
+                  "bg-gray-100 dark:bg-slate-700 text-black dark:text-white"
+                  : "text-[#888888]"
+                }`
+              }
+            >
+              <TbShieldSearch size={25} />
             </NavLink>
           </li>
         </ul>

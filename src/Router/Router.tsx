@@ -8,6 +8,8 @@ import ProtectedRoute from '../Routes/ProtectedRoute';
 import ScanName from "../Pages/ScanName/ScanName";
 import ScanType from "../Pages/ScanType/ScanType";
 import NotFoundPage from "../Pages/NotFoundPage/NotFoundPage";
+import ThreatIntelligence from "../Pages/ThreatIntelligence/ThreatIntelligence";
+import SummaryThreat from "../Pages/SummaryThreat/SummaryThreat";
 
 const Router = createBrowserRouter([
   {
@@ -19,7 +21,9 @@ const Router = createBrowserRouter([
       { path: "/scan", element: <ProtectedRoute><Scan /></ProtectedRoute> },
       { path: "/assets", element: <ProtectedRoute><Assets/></ProtectedRoute> },
       { path:"/scanName/:scanId", element:<ProtectedRoute><ScanName/></ProtectedRoute>},
-      { path:"/scanType/:scanId/:eventRes", element:<ProtectedRoute><ScanType/></ProtectedRoute>}
+      { path:"/scanType/:scanId/:eventRes", element:<ProtectedRoute><ScanType/></ProtectedRoute>},
+      { path:"/threat", element:<ProtectedRoute><ThreatIntelligence/></ProtectedRoute>},
+      { path:"/summaryThreat/:scanId", element:<ProtectedRoute><SummaryThreat/></ProtectedRoute>}
     ],
   },
   {

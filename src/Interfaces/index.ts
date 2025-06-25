@@ -162,3 +162,50 @@ export interface IDashboardData{
     assetNames: string[];
     scansByYear: IScanByYear[];
 }
+
+export interface IAllThreat {
+  id: string;
+  scanId: string;
+  scanName: string;
+  scanTarget: string;
+  scanStatus: string;
+  analysisStatus: "PENDING" | "COMPLETED" | "FAILED";
+  overallRiskScore: string;
+  executiveSummary: string | null;
+  createdAt: string;
+  updatedAt: string;
+  threatCount: {
+    LOW: number;
+    MEDIUM: number;
+    HIGH: number;
+    CRITICAL: number;
+    INFO: number;
+  };
+}
+
+export interface IFinding {
+  id: string;
+  threatIntelligenceId: string;
+  category: string;
+  title: string;
+  description: string;
+  severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO";
+  riskScore: number;
+  affectedAssets:string[];
+  mitigation:string
+}
+export interface IFindingsSummary {
+  CRITICAL: number;
+  HIGH: number;
+  MEDIUM: number;
+  LOW: number;
+  INFO: number;
+}
+export interface ISummaryThraet{
+
+    averageRiskScore:number;
+    findings:IFinding[];
+    findingsSummary:IFindingsSummary
+
+}
+

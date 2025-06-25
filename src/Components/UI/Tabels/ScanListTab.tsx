@@ -14,6 +14,7 @@ interface IProps {
 const ScanListTab = ({ scans }: IProps) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [activeRescanId, setActiveRescanId] = useState<string | null>(null);
+    const [activeAnalyzeId, setActiveAnalyzeId] = useState<string | null>(null);
     const [scanToDelete, setScanToDelete] = useState<IScanList | null>(null);
 
     const navigate = useNavigate();
@@ -29,6 +30,16 @@ const ScanListTab = ({ scans }: IProps) => {
         },
         onError: (error) => {
             console.error("Error starting scan:", error);
+        },
+    });
+    const analyzeMutation = useMutation({
+        mutationFn: async (scanId: string) => {
+            const res = await axiosInstance.post(`/v1/threat-intelligence/generate/${scanId}`, {}, { timeout: 15000 });
+            return res.data;
+        },
+        onSuccess: () => {
+            console.log("done")
+            queryClient.invalidateQueries({ queryKey: ["allThreat"] });
         },
     });
 
@@ -67,6 +78,18 @@ const ScanListTab = ({ scans }: IProps) => {
         rescanMutation.mutate(scan.id, {
             onSettled: () => {
                 setActiveRescanId(null);
+            },
+        });
+    };
+    const handleAnalyze = (scan: IScanList) => {
+        setActiveAnalyzeId(scan.id);
+        if (scan.status !== "FINISHED") {
+            toast.error("Scan is still in progress.Please wait until it finishes.");
+            return;
+        }
+        analyzeMutation.mutate(scan.id, {
+            onSettled: () => {
+                setActiveAnalyzeId(null);
             },
         });
     };
@@ -125,6 +148,20 @@ const ScanListTab = ({ scans }: IProps) => {
                                 <td className="px-4 py-5">{scan.elementsFound}</td>
                                 <td className="px-4 py-5 rounded-r-2xl">
                                     <div className="flex gap-2 justify-center">
+                                        <Button
+                                            type="button"
+                                            variant="analyze"
+                                            size="md"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleAnalyze(scan);
+                                            }}
+                                            isLoading={activeAnalyzeId === scan.id && analyzeMutation.status === "pending"}
+                                        >
+                                            {activeAnalyzeId === scan.id && analyzeMutation.status === "pending"
+                                                ? "Analyze.."
+                                                : "Analyze"}
+                                        </Button>
                                         <Button
                                             type="button"
                                             variant="rescan"
